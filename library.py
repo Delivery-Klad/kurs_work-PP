@@ -157,6 +157,18 @@ def add_count(count):
         messagebox.showerror('error', 'Вы не выбрали книгу')
 
 
+def middleTime():
+    try:
+        i = frame.selection()[0]
+        book = frame.item(i).values()
+        book = str(book).split()
+        ID = book[2][1:-1]
+        time = database.get_middleTime(ID)
+        label_sort.config(text="Среднее время книги\n с ID: {0} на руках: {1} дней".format(ID, time))
+    except IndexError:
+        messagebox.showerror('error', 'Вы не выбрали книгу')
+
+
 fill_LibTable()
 fill_on_hand_table()
 # region UI создание графического интерфейса
@@ -171,6 +183,9 @@ button_give.place(relx=0.52, rely=0.05, relwidth=0.1, relheight=0.05)
 
 button_take = tk.Button(root, text="<-Вернуть книгу<-", bg='#BDBDBD', command=lambda: replace_book("NotInLibrary"))
 button_take.place(relx=0.52, rely=0.12, relwidth=0.1, relheight=0.05)
+
+button_middle = tk.Button(root, text="Среднее время на руках", bg='#BDBDBD', command=lambda: middleTime())
+button_middle.place(relx=0.52, rely=0.57, relwidth=0.1, relheight=0.05)
 
 button_sortID = tk.Button(root, text="ID", bg='#BDBDBD', command=lambda: sort_frame("ID"))
 button_sortID.place(relx=0.15, rely=0.945, relwidth=0.03, relheight=0.05)
@@ -258,9 +273,15 @@ label_sort2.place(relx=0.58, rely=0.945)
 
 label_sort = tk.Label(root, font=12, text="Пополнение", fg='black')
 label_sort.place(relx=0.05, rely=0.55)
+
+label_sort = tk.Label(root, font=12, text="Другие функции", fg='black')
+label_sort.place(relx=0.52, rely=0.25, relwidth=0.1, relheight=0.05)
+
+label_sort = tk.Label(root, font=12, text="Среднее время книги\n с ID: 0 на руках: 0 дней", fg='black', bg='white')
+label_sort.place(relx=0.49, rely=0.31, relwidth=0.15, relheight=0.25)
 # endregion
 if __name__ == "__main__":
-    root.title("Учет книг в библиотеке")
+    root.title("Библиотека")
     root.geometry("1750x500")
     root.resizable(False, False)
     root.mainloop()

@@ -170,3 +170,18 @@ def get_max_ID():
         return maxID
     except TypeError:
         return 1
+
+
+def get_middleTime(ID):
+    try:
+        connect = sqlite3.connect(databaseName)
+        cursor = connect.cursor()
+        cursor.execute("SELECT AllTime FROM Library WHERE ID=" + str(ID))
+        time = cursor.fetchall()[0][0]
+        cursor.execute("SELECT CountTakes FROM Library WHERE ID=" + str(ID))
+        takes = cursor.fetchall()[0][0]
+        if takes == 0:
+            return 0
+        return round(time/takes, 2)
+    except Exception as e:
+        print(e)
