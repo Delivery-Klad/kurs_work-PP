@@ -1,10 +1,15 @@
 from tkinter import messagebox
 from tkinter import ttk
+from tkinter import *
 import tkinter as tk
 import database
 
 databaseName = 'dataBase.db'
+currentUserID = 0
 root = tk.Tk()
+var1 = IntVar()
+var2 = IntVar()
+var3 = IntVar()
 
 # region tables
 frame = ttk.Treeview(root)
@@ -125,7 +130,7 @@ def replace_book(table):
             book = frame.item(i).values()
             book = str(book).split()
             ID = book[2][1:-1]
-            if database.give_book(int(ID)) > 1:
+            if database.give_book(int(ID), currentUserID) > 1:
                 frame.item(i, values=database.get_book(ID))
                 frame2.insert('', 'end', values=database.get_book_onHand(ID))
             else:
@@ -164,7 +169,7 @@ def middleTime():
         book = str(book).split()
         ID = book[2][1:-1]
         time = database.get_middleTime(ID)
-        label_sort.config(text="Среднее время книги\n с ID: {0} на руках: {1} дней".format(ID, time))
+        label_middle.config(text="Среднее время книги\n с ID: {0} на руках: {1} дней".format(ID, time))
     except IndexError:
         messagebox.showerror('error', 'Вы не выбрали книгу')
 
@@ -271,14 +276,26 @@ label_sort.place(relx=0.081, rely=0.945)
 label_sort2 = tk.Label(root, font=12, text="Сортировка по:", fg='black')
 label_sort2.place(relx=0.58, rely=0.945)
 
-label_sort = tk.Label(root, font=12, text="Пополнение", fg='black')
-label_sort.place(relx=0.05, rely=0.55)
+label_fill = tk.Label(root, font=12, text="Пополнение", fg='black')
+label_fill.place(relx=0.05, rely=0.55)
 
-label_sort = tk.Label(root, font=12, text="Другие функции", fg='black')
-label_sort.place(relx=0.52, rely=0.25, relwidth=0.1, relheight=0.05)
+label_func = tk.Label(root, font=12, text="Другие функции", fg='black')
+label_func.place(relx=0.52, rely=0.25, relwidth=0.1, relheight=0.05)
 
-label_sort = tk.Label(root, font=12, text="Среднее время книги\n с ID: 0 на руках: 0 дней", fg='black', bg='white')
-label_sort.place(relx=0.49, rely=0.31, relwidth=0.15, relheight=0.25)
+label_middle = tk.Label(root, font=12, text="Среднее время книги\n с ID: 0 на руках: 0 дней", fg='black', bg='white')
+label_middle.place(relx=0.49, rely=0.31, relwidth=0.15, relheight=0.25)
+
+label_func = tk.Label(root, font=12, text="Тип пользователя", fg='black')
+label_func.place(relx=0.04, rely=0.73)
+
+user = Checkbutton(root, font=12, text="Пользователь", fg='black', variable=var1)
+user.place(relx=0.03, rely=0.78, relwidth=0.1, relheight=0.05)
+
+lib_worker = Checkbutton(root, font=12, text="Библиотекарь", fg='black', variable=var2)
+lib_worker.place(relx=0.03, rely=0.83, relwidth=0.1, relheight=0.05)
+
+admin = Checkbutton(root, font=12, text="Админ", fg='black', variable=var3)
+admin.place(relx=0.014, rely=0.88, relwidth=0.1, relheight=0.05)
 # endregion
 if __name__ == "__main__":
     root.title("Библиотека")

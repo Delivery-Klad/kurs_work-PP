@@ -21,7 +21,8 @@ def create_tables():
                    'Author TEXT,'
                    'Year INTEGER,'
                    'takeID INTEGER,'
-                   'timeTake TEXT)')
+                   'timeTake TEXT,'
+                   'takerID INTEGER)')
     connect.commit()
 
 
@@ -117,7 +118,7 @@ def take_book(ID, takeID):
         print(e)
 
 
-def give_book(ID):
+def give_book(ID, takerID):
     try:
         connect = sqlite3.connect(databaseName)
         cursor = connect.cursor()
@@ -129,8 +130,8 @@ def give_book(ID):
                            "WHERE ID=" + str(ID))
             cursor.execute("SELECT ID,Name,Author,Year FROM Library WHERE ID=" + str(ID))
             data = cursor.fetchall()[0]
-            cursor.execute("INSERT INTO NotInLibrary VALUES (?,?,?,?,{0},'{1}')"
-                           .format(get_max_ID(), datetime.now().strftime('%y-%m-%d')), data)
+            cursor.execute("INSERT INTO NotInLibrary VALUES (?,?,?,?,{0},'{1}',{2})"
+                           .format(get_max_ID(), datetime.now().strftime('%y-%m-%d'), takerID), data)
             connect.commit()
             return count
         else:
