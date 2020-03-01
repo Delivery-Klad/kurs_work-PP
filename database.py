@@ -243,7 +243,15 @@ def get_middleTime(ID):
             cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(0, ID))
             connect.commit()
             return 0
-        cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(round(time/takes, 2), ID))
+        middle = time/takes
+        last_num = str(middle)[len(str(middle))-1]
+        if middle == 1 or last_num == '1':
+            day = ' день'
+        elif 5 > middle > 1 or last_num == '2' or last_num == '2' or last_num == '2':
+            day = ' дня'
+        else:
+            day = ' дней'
+        cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(str(round(time/takes, 2)) + day, ID))
         connect.commit()
         return round(time/takes, 2)
     except Exception as e:

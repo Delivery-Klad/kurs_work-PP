@@ -355,61 +355,41 @@ button_enter.place(relx=0.08, rely=0.94, relwidth=0.03, relheight=0.05)
 
 entry_id = tk.Entry(root, font=12)
 entry_id.place(relx=0.045, rely=0.05, relwidth=0.1, relheight=0.05)
-
 entry_userId = tk.Entry(root, font=12)
 entry_userId.place(relx=0.025, rely=0.94, relwidth=0.05, relheight=0.05)
-
 entry_title = tk.Entry(root, font=12)
 entry_title.place(relx=0.045, rely=0.12, relwidth=0.1, relheight=0.05)
-
 entry_author = tk.Entry(root, font=12)
 entry_author.place(relx=0.045, rely=0.19, relwidth=0.1, relheight=0.05)
-
 entry_year = tk.Entry(root, font=12)
 entry_year.place(relx=0.045, rely=0.26, relwidth=0.1, relheight=0.05)
-
 entry_count = tk.Entry(root, font=12)
 entry_count.place(relx=0.045, rely=0.33, relwidth=0.1, relheight=0.05)
 
 label_id = tk.Label(root, font=12, text="Id:", fg='black')
 label_id.place(relx=0.023, rely=0.05)
-
 label_title = tk.Label(root, font=12, text="Назв:", fg='black')
 label_title.place(relx=0.01, rely=0.12)
-
 label_author = tk.Label(root, font=12, text="Автор:", fg='black')
 label_author.place(relx=0.005, rely=0.19)
-
 label_year = tk.Label(root, font=12, text="Год:", fg='black')
 label_year.place(relx=0.015, rely=0.26)
-
 label_count = tk.Label(root, font=12, text="Кол-во:", fg='black')
 label_count.place(relx=0.005, rely=0.33)
-
 label_sort = tk.Label(root, font=12, text="Сортировка по:", fg='black')
 label_sort.place(relx=0.148, rely=0.945)
-
 label_sort2 = tk.Label(root, font=12, text="Сортировка по:", fg='black')
 label_sort2.place(relx=0.647, rely=0.945)
-
 label_fill = tk.Label(root, font=12, text="Пополнение", fg='black')
 label_fill.place(relx=0.05, rely=0.55)
-
-label_func = tk.Label(root, font=12, text="Другие функции", fg='black')
-label_func.place(relx=0.52, rely=0.25, relwidth=0.1, relheight=0.05)
-
-label_middle = tk.Label(root, font=12, text="", fg='black', bg='white')
-label_middle.place(relx=0.49, rely=0.31, relwidth=0.15, relheight=0.25)
-
+label_func = tk.Label(root, font=12, text="Формирование отчетов", fg='black')
+label_func.place(relx=0.52, rely=0.5, relwidth=0.1, relheight=0.05)
 label_func = tk.Label(root, font=12, text="Тип пользователя", fg='black')
 label_func.place(relx=0.04, rely=0.73)
-
 user = Checkbutton(root, font=12, text="Пользователь", fg='black', variable=var1)
 user.place(relx=0.01, rely=0.78, relwidth=0.1, relheight=0.05)
-
 lib_worker = Checkbutton(root, font=12, text="Библиотекарь", fg='black', variable=var2)
 lib_worker.place(relx=0.01, rely=0.83, relwidth=0.1, relheight=0.05)
-
 admin = Checkbutton(root, font=12, text="Админ", fg='black', variable=var3)
 admin.place(relx=0.02, rely=0.88, relwidth=0.05, relheight=0.05)
 # endregion
