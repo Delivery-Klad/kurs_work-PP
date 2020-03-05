@@ -235,10 +235,10 @@ def get_middleTime(ID):
     try:
         connect = sqlite3.connect(databaseName)
         cursor = connect.cursor()
-        cursor.execute("SELECT AllTime FROM Library WHERE ID=" + str(ID))
-        time = cursor.fetchall()[0][0]
-        cursor.execute("SELECT CountTakes FROM Library WHERE ID=" + str(ID))
-        takes = cursor.fetchall()[0][0]
+        cursor.execute("SELECT AllTime,CountTakes FROM Library WHERE ID=" + str(ID))
+        res = cursor.fetchall()
+        time = res[0][0]
+        takes = res[0][1]
         if takes == 0:
             cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(0, ID))
             connect.commit()
@@ -262,17 +262,17 @@ def get_frequency(ID):
     try:
         connect = sqlite3.connect(databaseName)
         cursor = connect.cursor()
-        cursor.execute("SELECT CountTakes FROM Library WHERE ID=" + str(ID))
-        takes = cursor.fetchall()[0][0]
-        cursor.execute("SELECT add_time FROM Library WHERE ID=" + str(ID))
-        time = cursor.fetchall()[0][0]
+        cursor.execute("SELECT CountTakes,add_time FROM Library WHERE ID=" + str(ID))
+        res = cursor.fetchall()
+        takes = res[0][0]
+        time = res[0][1]
         date_format = '%y-%m-%d'
         time = datetime.strptime(time, date_format)
         now = datetime.strptime(datetime.now().strftime('%y-%m-%d'), date_format)
         res = now - time
         res = int(res.days)
-        print(str(res) + " ?????")
-        freq = round(takes/res, 2)
+        freq = str(round(takes/(res + 1), 2))
+        freq += " takes/days"
         cursor.execute("UPDATE Library SET frequency='{0}' WHERE ID={1}".format(freq, ID))
         connect.commit()
     except Exception as e:

@@ -1,3 +1,4 @@
+# coding=utf8
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
@@ -280,8 +281,13 @@ def login():
     else:
         messagebox.showerror('error', 'Необходимо выбрать один из типов пользователей')
         return
-    currentUserID = int(entry_userId.get())
+    var1.set(0)
+    var2.set(0)
+    var3.set(0)
+    if len(entry_userId.get()) != 0:
+        currentUserID = int(entry_userId.get())
     fill_on_hand_table()
+    entry_userId.delete(0, 'end')
     button_sortID.configure(state='normal')
     button_sortID2.configure(state='normal')
     button_sortName.configure(state='normal')
@@ -302,10 +308,10 @@ button_del = tk.Button(root, text="Удалить", bg='#BDBDBD', command=lambda
 button_del.place(relx=0.045, rely=0.46, relwidth=0.1, relheight=0.05)
 button_give = tk.Button(root, text="->Взять книгу->", bg='#BDBDBD', command=lambda: replace_book("Library"),
                         state='disabled')
-button_give.place(relx=0.52, rely=0.05, relwidth=0.1, relheight=0.05)
+button_give.place(relx=0.52, rely=0.13, relwidth=0.1, relheight=0.05)
 button_take = tk.Button(root, text="<-Вернуть книгу<-", bg='#BDBDBD', command=lambda: replace_book("NotInLibrary"),
                         state='disabled')
-button_take.place(relx=0.52, rely=0.12, relwidth=0.1, relheight=0.05)
+button_take.place(relx=0.52, rely=0.2, relwidth=0.1, relheight=0.05)
 button_middle = tk.Button(root, text="Среднее время на руках", bg='#BDBDBD', command=lambda: fill_middle_time(),
                           state='disabled')
 button_middle.place(relx=0.52, rely=0.58, relwidth=0.1, relheight=0.05)
