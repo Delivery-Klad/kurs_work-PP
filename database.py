@@ -26,6 +26,9 @@ def create_tables():
                    'takeID INTEGER,'
                    'timeTake TEXT,'
                    'takerID INTEGER)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS Users(login TEXT,'
+                   'password TEXT,'
+                   'type TEXT)')
     connect.commit()
 
 
@@ -166,7 +169,7 @@ def take_book(ID, takeID):
         date_format = '%y-%m-%d'
         time = datetime.strptime(time, date_format)
         now = datetime.strptime(datetime.now().strftime('%y-%m-%d'), date_format)
-        res = now-time
+        res = now - time
         res = int(res.days)
         cursor.execute("UPDATE Library SET Count=Count+1,OnHandsCount=OnHandsCount-1,AllTime=AllTime+{0} WHERE ID={1}"
                        .format(res, ID))
@@ -243,17 +246,18 @@ def get_middleTime(ID):
             cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(0, ID))
             connect.commit()
             return 0
-        middle = time/takes
-        last_num = str(middle)[len(str(middle))-1]
+        middle = time / takes
+        last_num = str(middle)[len(str(middle)) - 1]
         if middle == 1 or last_num == '1':
             day = ' день'
         elif 5 > middle > 1 or last_num == '2' or last_num == '2' or last_num == '2':
             day = ' дня'
         else:
             day = ' дней'
-        cursor.execute("UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(str(round(time/takes, 2)) + day, ID))
+        cursor.execute(
+            "UPDATE Library SET middle_time='{0}' WHERE ID={1}".format(str(round(time / takes, 2)) + day, ID))
         connect.commit()
-        return round(time/takes, 2)
+        return round(time / takes, 2)
     except Exception as e:
         print(e)
 
@@ -271,9 +275,45 @@ def get_frequency(ID):
         now = datetime.strptime(datetime.now().strftime('%y-%m-%d'), date_format)
         res = now - time
         res = int(res.days)
-        freq = str(round(takes/(res + 1), 2))
+        freq = str(round(takes / (res + 1), 2))
         freq += " takes/days"
         cursor.execute("UPDATE Library SET frequency='{0}' WHERE ID={1}".format(freq, ID))
         connect.commit()
     except Exception as e:
         print(e)
+
+
+def check_user(login, password):
+    try:
+        connect = sqlite3.connect(databaseName)
+        cursor = connect.cursor()
+        cursor.execute("SELECT login,password,type FROM Users WHERE login=" + str(login))
+        res = cursor.fetchall()
+        Log = res[0][0]
+        Pass = res[0][1]
+        Type = res[0][2]
+        if Log == login and Pass == password:
+            return Type
+        else:
+            return Type
+    except IndexError as e:
+        return False
+
+
+def reg_user(login, password, Type):
+    try:
+        connect = sqlite3.connect(databaseName)
+        cursor = connect.cursor()
+        cursor.execute("SELECT login FROM Users WHERE login=" + str(login))
+        try:
+            user = cursor.fetchall()[0][0]
+            print(user)
+            return False
+        except IndexError:
+            print('1')
+        data = [login, password, Type]
+        cursor.execute("INSERT INTO Users VALUES(?,?,?)", data)
+        connect.commit()
+        return True
+    except IndexError:
+        pass
