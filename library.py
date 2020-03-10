@@ -272,6 +272,9 @@ def login():
                 button_plusTwenty.configure(state='normal')
                 button_frequency.configure(state='normal')
                 button_onHand.configure(state='normal')
+            elif userID == "5":
+                messagebox.showerror('error', 'Неверный пароль')
+                return
         else:
             messagebox.showerror('error', 'Пользователь не найден')
     var1.set(0)

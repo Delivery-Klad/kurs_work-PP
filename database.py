@@ -295,7 +295,7 @@ def check_user(login, password):
         if Log == login and Pass == password:
             return Type
         else:
-            return Type
+            return "5"
     except IndexError as e:
         return False
 
