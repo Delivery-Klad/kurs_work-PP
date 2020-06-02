@@ -5,9 +5,7 @@ from datetime import datetime
 databaseName = 'dataBase.db'
 
 
-def create_tables():
-    connect = sqlite3.connect(databaseName)
-    cursor = connect.cursor()
+def create_tables(connect, cursor):
     cursor.execute('CREATE TABLE IF NOT EXISTS Library(ID INTEGER,'
                    'Name TEXT,'
                    'Author TEXT,'
@@ -35,6 +33,7 @@ def create_tables():
 def fill_libTable():
     connect = sqlite3.connect(databaseName)
     cursor = connect.cursor()
+    create_tables(connect, cursor)
     cursor.execute("SELECT ID,Name,Author,Year,Count FROM Library WHERE Count>0 ORDER BY ID")
     books = cursor.fetchall()
     return books
@@ -43,8 +42,6 @@ def fill_libTable():
 def fill_onHandTableLib(userID, who):
     connect = sqlite3.connect(databaseName)
     cursor = connect.cursor()
-    print(who)
-    print(userID)
     if who == 1 or who == 2:
         cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary ORDER BY ID")
         books = cursor.fetchall()
@@ -287,7 +284,7 @@ def check_user(login, password):
     try:
         connect = sqlite3.connect(databaseName)
         cursor = connect.cursor()
-        cursor.execute("SELECT login,password,type FROM Users WHERE login=" + str(login))
+        cursor.execute("SELECT login,password,type FROM Users WHERE login='{0}'".format(login))
         res = cursor.fetchall()
         Log = res[0][0]
         Pass = res[0][1]
@@ -304,7 +301,7 @@ def reg_user(login, password, Type):
     try:
         connect = sqlite3.connect(databaseName)
         cursor = connect.cursor()
-        cursor.execute("SELECT login FROM Users WHERE login=" + str(login))
+        cursor.execute("SELECT login FROM Users WHERE login='{0}'".format(login))
         try:
             user = cursor.fetchall()[0][0]
             print(user)

@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import *
 import tkinter as tk
 import database
+from tkinter import filedialog
 
 databaseName = 'dataBase.db'
 who = 0
@@ -49,6 +50,17 @@ frame2.heading("Идентификатор", text="Идентификатор", 
 
 
 # endregion
+
+
+def connect_to_database():
+    try:
+        global databaseName
+        databaseName = filedialog.askopenfilename(filetypes=(("DB", "*.db"), ("All files", "*.*")))
+        database.databaseName = databaseName
+        fill_LibTable()
+        fill_on_hand_table()
+    except Exception as e:
+        print(e)
 
 
 def fill_LibTable():
@@ -392,6 +404,13 @@ button_plusFT = tk.Button(root, text="+15", bg='#BDBDBD', command=lambda: add_co
 button_plusFT.place(relx=0.555, rely=0.665, relwidth=0.03, relheight=0.05)
 button_plusTwenty = tk.Button(root, text="+20", bg='#BDBDBD', command=lambda: add_count(20), state='disabled')
 button_plusTwenty.place(relx=0.59, rely=0.665, relwidth=0.03, relheight=0.05)
+button_refresh = tk.Button(root, text="Обновить БД", bg='#BDBDBD', command=lambda: (fill_on_hand_table(),
+                                                                                    fill_on_hand_table()),
+                           state='normal')
+button_refresh.place(relx=0.52, rely=0.8, relwidth=0.1, relheight=0.05)
+button_connect = tk.Button(root, text="Подключить БД", bg='#BDBDBD', command=lambda: connect_to_database(),
+                           state='normal')
+button_connect.place(relx=0.52, rely=0.86, relwidth=0.1, relheight=0.05)
 button_enter = tk.Button(root, text="Вход", bg='#BDBDBD', command=lambda: login())
 button_enter.place(relx=0.08, rely=0.85, relwidth=0.05, relheight=0.05)
 button_reg = tk.Button(root, text="Регистрация", bg='#BDBDBD', command=lambda: reg())
