@@ -4,9 +4,7 @@
     <list default="true" id="313909c7-cf02-4902-b6e9-f9411f44cc41" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataBase.db" beforeDir="false" afterPath="$PROJECT_DIR$/dataBase.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library.py" beforeDir="false" afterPath="$PROJECT_DIR$/library.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/РПЗ Валяев Д.А.ИКБО-08-18.docx" beforeDir="false" afterPath="$PROJECT_DIR$/РПЗ Валяев Д.А.ИКБО-08-18.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/РПЗ Валяев Д.А.ИКБО-08-18.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/РПЗ Валяев Д.А.ИКБО-08-18.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

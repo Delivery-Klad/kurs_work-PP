@@ -23,7 +23,7 @@ def create_tables(connect, cursor):
                    'Year INTEGER,'
                    'takeID INTEGER,'
                    'timeTake TEXT,'
-                   'takerID INTEGER)')
+                   'takerID TEXT)')
     cursor.execute('CREATE TABLE IF NOT EXISTS Users(login TEXT,'
                    'password TEXT,'
                    'type TEXT)')
@@ -47,7 +47,7 @@ def fill_onHandTableLib(userID, who):
         books = cursor.fetchall()
         return books
     elif who == 0:
-        cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID={0} ORDER BY ID".
+        cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID='{0}' ORDER BY ID".
                        format(userID))
         books = cursor.fetchall()
         return books
@@ -56,7 +56,7 @@ def fill_onHandTableLib(userID, who):
 def fill_onHandTableUser(userID):
     connect = sqlite3.connect(databaseName)
     cursor = connect.cursor()
-    cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID={0} ORDER BY ID".format(userID))
+    cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID='{0}' ORDER BY ID".format(userID))
     books = cursor.fetchall()
     return books
 
@@ -91,7 +91,7 @@ def sort2(byWhat, who, userID, table):
         if who == 1 or who == 2:
             cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary ORDER BY " + str(byWhat))
         elif who == 0:
-            cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID={0} ORDER BY {1}".
+            cursor.execute("SELECT ID,Name,Author,Year,takeID FROM NotInLibrary WHERE takerID='{0}' ORDER BY {1}".
                            format(userID, byWhat))
         return cursor.fetchall()
     elif table == 1:
@@ -100,7 +100,7 @@ def sort2(byWhat, who, userID, table):
         if who == 1 or who == 2:
             cursor.execute("SELECT ID,Name,Author,Year,middle_time FROM Library ORDER BY " + str(byWhat))
         elif who == 0:
-            cursor.execute("SELECT ID,Name,Author,Year,middle_time FROM Library WHERE takerID={0} ORDER BY {1}".
+            cursor.execute("SELECT ID,Name,Author,Year,middle_time FROM Library WHERE takerID='{0}' ORDER BY {1}".
                            format(userID, byWhat))
         return cursor.fetchall()
     else:
@@ -109,7 +109,7 @@ def sort2(byWhat, who, userID, table):
         if who == 1 or who == 2:
             cursor.execute("SELECT ID,Name,Author,Year,frequency FROM Library ORDER BY " + str(byWhat))
         elif who == 0:
-            cursor.execute("SELECT ID,Name,Author,Year,frequency FROM Library WHERE takerID={0} ORDER BY {1}".
+            cursor.execute("SELECT ID,Name,Author,Year,frequency FROM Library WHERE takerID='{0}' ORDER BY {1}".
                            format(userID, byWhat))
         return cursor.fetchall()
 
@@ -188,7 +188,7 @@ def give_book(ID, takerID):
                            "WHERE ID=" + str(ID))
             cursor.execute("SELECT ID,Name,Author,Year FROM Library WHERE ID=" + str(ID))
             data = cursor.fetchall()[0]
-            cursor.execute("INSERT INTO NotInLibrary VALUES (?,?,?,?,{0},'{1}',{2})"
+            cursor.execute("INSERT INTO NotInLibrary VALUES (?,?,?,?,{0},'{1}','{2}')"
                            .format(get_max_ID(), datetime.now().strftime('%y-%m-%d'), takerID), data)
             connect.commit()
             return count
