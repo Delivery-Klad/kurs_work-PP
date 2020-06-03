@@ -350,6 +350,9 @@ def Exit():
 
 fill_LibTable()
 # region UI создание графического интерфейса
+l_frame = LabelFrame(root, relief=FLAT)
+l_frame.place(relx=0.025, rely=0.85, relwidth=0.12, relheight=0.14)
+
 button_add = tk.Button(root, text="Добавить", bg='#BDBDBD', command=lambda: add_book(), state='disabled')
 button_add.place(relx=0.045, rely=0.40, relwidth=0.1, relheight=0.05)
 button_del = tk.Button(root, text="Удалить", bg='#BDBDBD', command=lambda: del_book(), state='disabled')
@@ -411,12 +414,12 @@ button_refresh.place(relx=0.52, rely=0.8, relwidth=0.1, relheight=0.05)
 button_connect = tk.Button(root, text="Подключить БД", bg='#BDBDBD', command=lambda: connect_to_database(),
                            state='normal')
 button_connect.place(relx=0.52, rely=0.86, relwidth=0.1, relheight=0.05)
-button_enter = tk.Button(root, text="Вход", bg='#BDBDBD', command=lambda: login())
-button_enter.place(relx=0.08, rely=0.85, relwidth=0.05, relheight=0.05)
-button_reg = tk.Button(root, text="Регистрация", bg='#BDBDBD', command=lambda: reg())
-button_reg.place(relx=0.025, rely=0.85, relwidth=0.05, relheight=0.05)
-button_exit = tk.Button(root, text="Выход", bg='#BDBDBD', command=lambda: Exit(), state='disabled')
-button_exit.place(relx=0.025, rely=0.915, relwidth=0.105, relheight=0.05)
+button_enter = tk.Button(l_frame, text="Вход", bg='#BDBDBD', command=lambda: login())
+button_enter.place(relx=0, rely=-0.1, relwidth=0.48, relheight=0.5)
+button_reg = tk.Button(l_frame, text="Регистрация", bg='#BDBDBD', command=lambda: reg())
+button_reg.place(relx=0, rely=0.46, relwidth=1, relheight=0.4)
+button_exit = tk.Button(l_frame, text="Выход", bg='#BDBDBD', command=lambda: Exit(), state='disabled')
+button_exit.place(relx=0.52, rely=-0.1, relwidth=0.48, relheight=0.5)
 
 entry_id = tk.Entry(root, font=12)
 entry_id.place(relx=0.045, rely=0.05, relwidth=0.1, relheight=0.05)
