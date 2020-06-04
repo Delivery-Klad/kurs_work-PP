@@ -1,4 +1,5 @@
 # coding=utf8
+import os
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
@@ -11,6 +12,9 @@ who = 0
 currentUserID = 0
 currentTable = 0
 root = tk.Tk()
+root.title("Библиотека")
+root.geometry("1750x500")
+root.resizable(False, False)
 var1 = IntVar()
 var2 = IntVar()
 var3 = IntVar()
@@ -55,16 +59,24 @@ frame2.heading("Идентификатор", text="Идентификатор", 
 def connect_to_database():
     try:
         global databaseName
-        databaseName = filedialog.askopenfilename(filetypes=(("DB", "*.db"), ("All files", "*.*")))
-        database.databaseName = databaseName
-        fill_LibTable()
-        fill_on_hand_table()
+        tmp = filedialog.askopenfilename(filetypes=(("DB", "*.db"), ("All files", "*.*")))
+        if tmp:
+            databaseName = tmp
+            database.databaseName = databaseName
+            fill_LibTable()
+            Exit()
     except Exception as e:
         print(e)
 
 
 def fill_LibTable():
     try:
+        if not os.path.isfile(databaseName):
+            answer = messagebox.askokcancel(title="INFO", message="База данных не обнаружена!\nВыберете файл базы данных")
+            if answer:
+                connect_to_database()
+            else:
+                exit(0)
         frame.delete(*frame.get_children())
         books = database.fill_libTable()
         for i in books:
@@ -76,15 +88,16 @@ def fill_LibTable():
 def fill_on_hand_table():
     global currentTable
     try:
-        currentTable = 0
-        button_take.configure(state='normal')
-        button_give.configure(state='normal')
-        frame2.heading("Идентификатор", text="Идентификатор", anchor=tk.W)
-        button_sortCount2.configure(text='Идентификатору')
-        frame2.delete(*frame2.get_children())
-        books = database.fill_onHandTableLib(currentUserID, who)
-        for i in books:
-            frame2.insert('', 'end', values=i)
+        if currentUserID != -999:
+            currentTable = 0
+            button_take.configure(state='normal')
+            button_give.configure(state='normal')
+            frame2.heading("Идентификатор", text="Идентификатор", anchor=tk.W)
+            button_sortCount2.configure(text='Идентификатору')
+            frame2.delete(*frame2.get_children())
+            books = database.fill_onHandTableLib(currentUserID, who)
+            for i in books:
+                frame2.insert('', 'end', values=i)
     except Exception as e:
         print(e)
 
@@ -145,11 +158,12 @@ def add_book():
     try:
         if len(entry_id.get()) != 0 and len(entry_title.get()) != 0 and len(entry_author.get()) != 0 and \
                 len(entry_year.get()) != 0 and len(entry_count.get()) != 0:
-            if not database.check_id(int(entry_id.get())):
-                messagebox.showerror("TypeError", "Введенный Id уже существует")
-                return
             data = [entry_id.get(), entry_title.get(), entry_author.get(), entry_year.get(), entry_count.get()]
-            if not data[0].isdigit():
+            if data[0].isdigit():
+                if not database.check_id(int(entry_id.get())):
+                    messagebox.showerror("TypeError", "Введенный Id уже существует")
+                    return
+            else:
                 messagebox.showerror("TypeError", "Id должен быть указан числом")
                 return
             if not data[3].isdigit():
@@ -198,9 +212,7 @@ def replace_book(table):
             book = frame2.item(i).values()
             book = str(book).split()
             ID = book[2][1:-1]
-            print('ID ' + str(ID))
             takeID = book[len(book) - 3][:-2]
-            print('takeID ' + str(takeID))
             database.take_book(ID, takeID)
             database.get_middleTime(ID)
             database.get_frequency(ID)
@@ -289,6 +301,9 @@ def login():
                 return
         else:
             messagebox.showerror('error', 'Пользователь не найден')
+    else:
+        messagebox.showerror('error', 'Заполните необходимые поля')
+        return 
     var1.set(0)
     var2.set(0)
     var3.set(0)
@@ -342,13 +357,13 @@ def Exit():
     global who
     global currentUserID
     who = 0
-    currentUserID = 0
+    currentUserID = -999
     all_disabled()
     button_enter.configure(state='normal')
     button_reg.configure(state='normal')
+    frame2.delete(*frame2.get_children())
 
 
-fill_LibTable()
 # region UI создание графического интерфейса
 l_frame = LabelFrame(root, relief=FLAT)
 l_frame.place(relx=0.025, rely=0.85, relwidth=0.12, relheight=0.14)
@@ -407,7 +422,7 @@ button_plusFT = tk.Button(root, text="+15", bg='#BDBDBD', command=lambda: add_co
 button_plusFT.place(relx=0.555, rely=0.665, relwidth=0.03, relheight=0.05)
 button_plusTwenty = tk.Button(root, text="+20", bg='#BDBDBD', command=lambda: add_count(20), state='disabled')
 button_plusTwenty.place(relx=0.59, rely=0.665, relwidth=0.03, relheight=0.05)
-button_refresh = tk.Button(root, text="Обновить БД", bg='#BDBDBD', command=lambda: (fill_on_hand_table(),
+button_refresh = tk.Button(root, text="Обновить БД", bg='#BDBDBD', command=lambda: (Exit(), fill_LibTable(),
                                                                                     fill_on_hand_table()),
                            state='normal')
 button_refresh.place(relx=0.52, rely=0.8, relwidth=0.1, relheight=0.05)
@@ -463,9 +478,7 @@ lib_worker = Checkbutton(root, font=12, text="Библиотекарь", fg='bla
 lib_worker.place(relx=0.01, rely=0.76, relwidth=0.1, relheight=0.05)
 admin = Checkbutton(root, font=12, text="Админ", fg='black', variable=var3)
 admin.place(relx=0.0195, rely=0.8, relwidth=0.05, relheight=0.05)
+fill_LibTable()
 # endregion
 if __name__ == "__main__":
-    root.title("Библиотека")
-    root.geometry("1750x500")
-    root.resizable(False, False)
     root.mainloop()

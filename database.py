@@ -304,10 +304,9 @@ def reg_user(login, password, Type):
         cursor.execute("SELECT login FROM Users WHERE login='{0}'".format(login))
         try:
             user = cursor.fetchall()[0][0]
-            print(user)
             return False
         except IndexError:
-            print('1')
+            pass
         data = [login, password, Type]
         cursor.execute("INSERT INTO Users VALUES(?,?,?)", data)
         connect.commit()
