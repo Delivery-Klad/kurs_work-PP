@@ -303,12 +303,13 @@ def login():
             messagebox.showerror('error', 'Пользователь не найден')
     else:
         messagebox.showerror('error', 'Заполните необходимые поля')
-        return 
+        return
     var1.set(0)
     var2.set(0)
     var3.set(0)
     if len(entry_userId.get()) != 0:
         currentUserID = entry_userId.get()
+
     fill_on_hand_table()
     entry_userId.delete(0, 'end')
     entry_pass.delete(0, 'end')

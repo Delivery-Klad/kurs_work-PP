@@ -307,6 +307,7 @@ def reg_user(login, password, Type):
             return False
         except IndexError:
             pass
+
         data = [login, password, Type]
         cursor.execute("INSERT INTO Users VALUES(?,?,?)", data)
         connect.commit()
